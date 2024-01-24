@@ -1,58 +1,36 @@
-import React, { useState } from "react";
-import { View, Text, Image, StyleSheet, ScrollView, Dimensions, TextInput } from "react-native";
+import React, {useState} from "react";
+import {Text} from "react-native";
 import useFetch from "../../hooks/useFetch";
-import SingleFaceCard from "../cards/SingleFaceCard";
-import MultipleFaceCard from "../cards/MultipleFaceCard";
+import FaceCard from "../cards/FaceCard";
+import Structure from "../cards/Structure";
 
 export default function BaseAppLayout() {
-    
-    const win = Dimensions.get('window');
+  const [cardName, setCardName] = useState<string>('')
+  const [input, setInput] = useState<string>('')
+  const {data, isLoading, error} = useFetch('https://api.scryfall.com/cards/search', cardName);
 
-    const styles = StyleSheet.create({
-        container: {
-            marginTop: 40,
-            paddingLeft: 10,
-            paddingRight: 10,
-            paddingBottom: 10,
-        },
-        image: {
-            width: win.width,
-            height: win.height / 3
-        }
-    });
+  const rest = {
+    onPress: () => setCardName(input),
+    onChangeText: (e: string) => setInput(e),
+  };
 
-    const { data: cards, isLoading: cardsLoading, error: cardsError } = useFetch('https://api.scryfall.com/cards/search');
-    
-    return (
-        <View style={styles.container}>
+  if (error) {
+    return <Structure {...rest}>
+      <Text style={{color: "red"}}>{error}</Text>
+    </Structure>
+  }
 
-            <TextInput
-                style={{height: 40}}
-                placeholder="Search cards!"
-                onChangeText={newText => 'ciao'}
-            />
+  if (isLoading) {
+    return <Structure {...rest}>
+      <Text>Loading cards...</Text>
+    </Structure>
+  }
 
-            <ScrollView>
+  if (data) {
+    return <Structure {...rest}>
+      {data.data.map((el: any) => <FaceCard card={el} key={el.id}/>)}
+    </Structure>
+  }
 
-                {/* Cards loading */}
-                {cardsError && <Text>{cardsError}</Text>}
-
-                {/* Cards Error */}
-                {cardsLoading && <Text>Loading cards...</Text>}
-
-                { 
-                    !!cards?.data && cards?.data?.length && cards?.data?.map( (card: any) => {
-                        const hasMultipleFaces = !!card?.card_faces?.length
-
-                        if( hasMultipleFaces )
-                            return <MultipleFaceCard key={card.id} card={card} />
-                        else
-                            return <SingleFaceCard key={card.id} card={card} />
-                    })
-                }
-
-            </ScrollView>
-        </View>
-    )
-    
+  return <Structure {...rest}/>
 }

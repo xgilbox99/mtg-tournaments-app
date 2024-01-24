@@ -1,28 +1,29 @@
-import { useState, useEffect } from 'react';
+import {useState, useEffect} from 'react';
 import axios from 'axios';
 
-const useFetch = (url, params ) => {
-    
-    const [data, setData] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
+const useFetch = (url, params) => {
 
-    useEffect( () => {
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-        axios.get( `${url}?q=Fable%20of` )
-            .then( res => {
-                setIsLoading(false);
-                setData(res.data);
-                setError(null);
-            })
-            .catch(err => {
-                setIsLoading(false);
-                setError(err.message);
-            })
-        
-    }, [url] )
+  useEffect(() => {
+      if (params) {
+        axios.get(`${url}?q=${params}`)
+          .then(res => {
+            setIsLoading(false);
+            setData(res.data);
+            setError(null);
+          })
+          .catch(err => {
+            setIsLoading(false);
+            setError(err.message);
+          })
+      }
+    }, [url, params]
+  )
 
-    return { data, isLoading, error };
+  return {data, isLoading, error};
 }
 
 export default useFetch;
