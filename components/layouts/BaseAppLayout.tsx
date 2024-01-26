@@ -5,12 +5,16 @@ import FaceCard from "../cards/FaceCard";
 import Structure from "../cards/Structure";
 
 export default function BaseAppLayout() {
-  const [cardName, setCardName] = useState<string>('')
+  
+  const [params, setParams] = useState<object>({})
   const [input, setInput] = useState<string>('')
-  const {data, isLoading, error} = useFetch('https://api.scryfall.com/cards/search', cardName);
+
+  const {data, isLoading, error} = useFetch('https://api.scryfall.com/cards/search', params, true );
 
   const rest = {
-    onPress: () => setCardName(input),
+    onPress: () => {
+      setParams({ q: input })
+    },
     onChangeText: (e: string) => setInput(e),
   };
 

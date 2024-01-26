@@ -1,5 +1,7 @@
-import {Button, Dimensions, ScrollView, StyleSheet, TextInput, View} from "react-native";
+import {Button, ScrollView, TextInput, View} from "react-native";
 import React, {ReactElement} from "react";
+import { core, lightColor } from "../../assets/styles/coreStyles";
+
 
 type StructureProps = {
   onChangeText?: (value: React.SetStateAction<string>) => void,
@@ -7,32 +9,16 @@ type StructureProps = {
   children?: ReactElement
 }
 export default function Structure({onChangeText, onPress, children}: StructureProps) {
-  const win = Dimensions.get('window').width;
-
-  const styles = StyleSheet.create({
-    container: {
-      width: win - 40,
-      display: "flex",
-      flexDirection: "row",
-      alignContent: "center",
-      alignItems: "center",
-      justifyContent: "space-between",
-      gap: 2,
-      borderStyle: 'solid',
-      borderColor: '#ddd',
-      borderWidth: 1,
-      marginBottom: 20,
-    },
-  });
   return (
     <View>
       <ScrollView>
-        <View style={styles.container}>
+        <View style={{padding: 20}}>
           <TextInput
+            style={core.textInputDark}
+            placeholderTextColor={lightColor}
             placeholder='Inserisci il nome della carta...'
             onChangeText={onChangeText}
             onBlur={onPress}
-            style={{paddingLeft: 10}}
           />
           <Button
             title="Cerca"

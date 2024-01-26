@@ -1,20 +1,12 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar, View } from 'react-native';
 import BaseAppLayout from './components/layouts/BaseAppLayout';
+import { core, darkColor } from './assets/styles/coreStyles.tsx';
 
 export default function App() {
   return (
-    <View style={styles.container}>
+    <View style={core.appContainerDark}>
+      <StatusBar backgroundColor={darkColor} barStyle="light-content" />
       <BaseAppLayout />
     </View>
-  );
+  )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 50,
-  },
-});

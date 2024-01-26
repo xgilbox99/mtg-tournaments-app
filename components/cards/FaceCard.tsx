@@ -1,45 +1,33 @@
 import React from "react";
-import {Text, Image, StyleSheet, View} from "react-native";
+import {Text, Image, View} from "react-native";
+import { core, whiteColor } from "../../assets/styles/coreStyles";
 
 export default function FaceCard({card}) {
-
-  const styles = StyleSheet.create({
-    container: {
-      display: "flex",
-      flexDirection: "column",
-      alignContent: "center",
-      alignItems: "center",
-      justifyContent: "center",
-      gap: 2,
-      marginBottom: 20,
-    },
-    image: {
-      width: 122, //488
-      height: 170, // 680
-    },
-    flexView: {
-      display: "flex",
-      flexDirection: "row",
-      flexWrap: "wrap",
-      alignContent: "center",
-      alignItems: "center",
-      justifyContent: "center",
-      gap: 5,
-    }
-  });
-
-  return <View style={styles.container}>
-    <Text style={{textAlign: 'center'}}>{card.name}</Text>
-    <View style={styles.flexView}>
+  return <View style={core.centeredColumnView}>
+    <Text style={
+      {
+        ...core.alignCenter,
+        color: whiteColor,
+      }
+    }>
+      {card.name}
+    </Text>
+    <View style={core.centeredRowView}>
       {card.image_uris && <Image
-        style={styles.image}
+        style={{
+          ...core.cardImageListSize,
+          ...core.marginBottom2
+        }}
         resizeMode="contain"
-        src={card?.image_uris?.normal}
+        src={card?.image_uris?.png}
       />}
       {card.card_faces?.map((el, i) => <Image
-          style={styles.image}
+          style={{
+            ...core.cardImageListSize,
+            ...core.marginBottom2
+          }}
           resizeMode="contain"
-          src={el.image_uris?.normal}
+          src={el.image_uris?.png}
           key={i}
         />
       )}
